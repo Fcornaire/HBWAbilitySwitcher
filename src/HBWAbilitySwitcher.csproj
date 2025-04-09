@@ -1,0 +1,72 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>HBWAbilitySwitcher</AssemblyName>
+    <Product>HBWAbilitySwitcher</Product>
+    <Version>0.1.0</Version>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+    <RestoreAdditionalProjectSources>
+      https://api.nuget.org/v3/index.json;
+      https://nuget.bepinex.dev/v3/index.json;
+      https://nuget.samboy.dev/v3/index.json
+    </RestoreAdditionalProjectSources>
+    <RootNamespace>HBWAbilitySwitcher</RootNamespace>
+  </PropertyGroup>
+
+	<PropertyGroup>
+		<ManagedPath>$(HBWPath)/Haste_Data/Managed</ManagedPath>
+	</PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
+    <PackageReference Include="BepInEx.Unity.Mono" Version="6.0.0-be.*" IncludeAssets="compile" />
+    <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
+	<PackageReference Include="UnityEngine.Modules" Version="2022.3.55" IncludeAssets="compile" />
+  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="Assembly-CSharp">
+			<HintPath>$(ManagedPath)/Assembly-CSharp.dll</HintPath>
+			<Private>false</Private>
+			<Publicize>true</Publicize>
+		</Reference>
+		<Reference Include="UnityEngine.CoreModule">
+			<HintPath>$(ManagedPath)/UnityEngine.CoreModule.dll</HintPath>
+			<Private>false</Private>
+			<Aliases>UnityEngineCoreModule</Aliases>
+		</Reference>
+		<Reference Include="UnityEngine.AnimationModule">
+			<HintPath>$(ManagedPath)/UnityEngine.AnimationModule.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="UnityEngine.PhysicsModule">
+			<HintPath>$(ManagedPath)/UnityEngine.PhysicsModule.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="Zorro.Core.Runtime">
+			<HintPath>$(ManagedPath)/Zorro.Core.Runtime.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="Sirenix.Serialization">
+			<HintPath>$(ManagedPath)/Sirenix.Serialization.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="UnityEngine.UI">
+			<HintPath>$(ManagedPath)/UnityEngine.UI.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+		
+
+
+	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="xcopy /Y /I &quot;$(TargetDir)&quot; &quot;$(HBWPath)/BepInEx/plugins/HBWAbilitySwitcher&quot;" Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))'" />
+	</Target>
+
+
+	<ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
+  </ItemGroup>
+</Project>
