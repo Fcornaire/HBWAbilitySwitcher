@@ -1,0 +1,71 @@
+name: Build and Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "6.0.x"
+
+      - name: Set HBWPath environment variable
+        run: |
+          echo HBWPath=src/Stripped >> $GITHUB_ENV
+
+      - name: Restore dependencies
+        run: dotnet restore src/HBWAbilitySwitcher.csproj
+
+      - name: Build project
+        run: dotnet build src/HBWAbilitySwitcher.csproj --configuration Release
+
+      - name: Create output directory
+        run: |
+          if (-Not (Test-Path -Path output)) {
+            New-Item -ItemType Directory -Path output
+          }
+
+      - name: Copy build artifacts
+        run: |
+          xcopy /Y /I "src\bin\Release\netstandard2.1" "output"
+
+      - name: Zip all into HBWAbilitySwitcher folder
+        run: |
+          mkdir HBWAbilitySwitcher
+          xcopy /Y /I output/* HBWAbilitySwitcher
+          powershell Compress-Archive -Path HBWAbilitySwitcher/* -DestinationPath ${{ github.workspace }}\HBWAbilitySwitcher.zip
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: HBWAbilitySwitcher
+          path: HBWAbilitySwitcher.zip
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Release v${{ github.run_number }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: svenstaro/upload-release-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          repo: ${{ github.repository }}
+          tag: v${{ github.run_number }}
+          file: HBWAbilitySwitcher.zip
+          asset_name: HBWAbilitySwitcher.zip
+          overwrite: true
