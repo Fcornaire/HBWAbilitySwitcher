@@ -11,7 +11,7 @@ public class Plugin : BaseUnityPlugin
 {
     internal static new ManualLogSource Logger;
     private static Harmony instance;
-
+    public static SFX_Instance SFX_HOVER_ON;
 
     private void Awake()
     {

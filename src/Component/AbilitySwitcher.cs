@@ -31,7 +31,7 @@ namespace HBWAbilitySwitcher.Component
         }
 
 
-        public void UpdateAbilityoSwitch(AbilityKind abilityKind)
+        public void UpdateAbilityToSwitch(AbilityKind abilityKind)
         {
             toSwitch = abilityKind;
             hasSwitched = false;
@@ -41,33 +41,16 @@ namespace HBWAbilitySwitcher.Component
                 fadeCoroutine = null;
                 isCoroutineRunning = false;
 
-
                 Color color = image.color;
                 color.a = 0f;
                 image.color = color;
-
             }
         }
 
         private void Update()
         {
-            //Get all SFX_INSTACE
-            var sfxInstances = GameObject.FindObjectsOfType<SFX_Instance>();
-
-            foreach (var sfxInstance in sfxInstances)
-            {
-                Plugin.Logger.LogInfo($"SFX_INSTANCE: {sfxInstance.name}");
-            }
-
             if (!hasSwitched)
             {
-                var animator = GameObject.FindAnyObjectByType<ButtonAnimator>();
-                if (animator != null)
-                {
-                    Plugin.Logger.LogInfo($"Switching to {toSwitch}");
-                    animator.sfxSelect.Play();
-                }
-
                 FactSystem.SetFact(MetaProgression.ActiveAbility, (float)toSwitch);
                 MetaProgression.AbilityEntry entry = SingletonAsset<MetaProgression>.Instance.GetEntry(toSwitch);
                 if (entry.icon != null)
@@ -80,6 +63,8 @@ namespace HBWAbilitySwitcher.Component
                     }
                     fadeCoroutine = StartCoroutine(FadeInOutImage());
                     isCoroutineRunning = true;
+
+                    Plugin.SFX_HOVER_ON.Play(PlayerCharacter.localPlayer.transform.position);
                 }
                 hasSwitched = true;
             }

@@ -1,5 +1,4 @@
-﻿extern alias UnityEngineCoreModule;
-using HarmonyLib;
+﻿using HarmonyLib;
 using HBWAbilitySwitcher.Component;
 using Landfall.Haste;
 
@@ -38,7 +37,7 @@ namespace HBWAbilitySwitcher.Pathcs
                     var abilitySwitcher = character.GetComponent<AbilitySwitcher>();
                     if (abilitySwitcher != null)
                     {
-                        abilitySwitcher.UpdateAbilityoSwitch(abilityKind);
+                        abilitySwitcher.UpdateAbilityToSwitch(abilityKind);
                     }
                 }
             }
