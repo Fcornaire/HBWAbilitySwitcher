@@ -15,17 +15,28 @@
 
 # About The Mod
 
-Quick ability switcher for Haste
+Quick in game ability switcher for Haste for controller (As long as your controller is recognized as XInput, it should work; Keyboard might be planned )
 
-Use your controller D-PAD to switch to the desired unlocked ability (That's right, the mod does not unlock the ability for you, switch happen if the ability is already unlocked)
+Use your controller D-PAD to switch to the desired unlocked ability (That's right, the mod does not unlock the ability for you, switch happen if the ability is already unlocked in your game)
+
+Built for the game version 1.2.d (meaning it might not work right away with an update)
+
+(up = BoardBoost, left = Fly, right = Grapple, down = Slomo)
 
 # Usage
 
-The game doesn't have an official modding support (for now!), we use [BepInEx](https://github.com/BepInEx/BepInEx) as the game patcher as an alternative:
+The game doesn't have (yet!) an official modding support, we use [BepInEx](https://github.com/BepInEx/BepInEx) as the game patcher as an alternative:
 
 - Follow the official installation guide [here](https://docs.bepinex.dev/articles/user_guide/installation/index.html) and use this prelease when downloading [v6.0.0-pre2](https://github.com/BepInEx/BepInEx/releases/tag/v6.0.0-pre.2) (The file you want is _BepInEx-Unity.Mono-win-x64-6.0.0-pre.2.zip_)
-- Download the [latest release](https://github.com/Fcornaire/HBWAbilitySwitcher/releases/latest) and extract to your {game_path}/BepInEx/plugins
+- Download the [latest release](https://github.com/Fcornaire/HBWAbilitySwitcher/releases/latest) and extract to your {game_path}/BepInEx/plugins/HBWAbilitySwitcher
 - Launch the game and check if the mod is working as intended (use your controller D-PAD)
+
+# Building
+
+- Clone thi repository
+- Set the environment variable **HBWPath** pointing to your own game install (something like _..\Steam\steamapps\common\Haste_)
+- Use your favorite IDE (Rider and other not tested) to build the project
+- Upon building,the compiled plugin should be copied to directly to your game path (not sure if copy work in other IDE)
 
 # Social
 
