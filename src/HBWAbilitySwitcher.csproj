@@ -56,15 +56,11 @@
 			<HintPath>$(ManagedPath)/UnityEngine.UI.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
-		
-
-
 	</ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="xcopy /Y /I &quot;$(TargetDir)&quot; &quot;$(HBWPath)/BepInEx/plugins/HBWAbilitySwitcher&quot;" Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))'" />
+		<Exec Command="xcopy /Y /I &quot;$(TargetDir)&quot; &quot;$(HBWPath)/BepInEx/plugins/HBWAbilitySwitcher&quot;" Condition="'$(Configuration)' == 'Debug' And '$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))'" />
 	</Target>
-
 
 	<ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
